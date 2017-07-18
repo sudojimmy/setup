@@ -161,8 +161,69 @@ function unsave {
 	rm -v ~/.go-dirs/$1
 }
 
-alias learn='man $(ls /bin | shuf | head -1)'
-alias cd..='cd ..'
-#zsh
+function vd {
+	vi */**/$1
+}
 
-export PATH=/opt/eclipse/neon:$PATH
+function vg {
+	vi `gss | awk '{print $2}' | grep -o "\S*$@.*\..*" `
+}
+
+#function vf {
+#	$(!!) | awk '{print $1}' | grep $1 | cut -f '1' -d ':' | xargs vi
+#}
+
+function vU {
+	vi `gss | grep 'U' | awk '{print $2}'`
+}
+
+# normal alias
+alias g++='g++ -std=c++14 -g -Wall'
+alias mc='make -s  clean'
+alias mr='make -s'
+alias learn='man $(ls /bin | shuf | head -1)'
+alias s='ssh -Y j585zhan@linux.student.cs.uwaterloo.ca'
+alias gdb="gdbtui"
+alias gpo='git push origin'
+alias gaa='git add --all'
+alias gl='git pull'
+alias gcl='git clone'
+alias ggpush='git push origin'
+alias gcam='git commit -a -m'
+alias gb='git branch'
+alias gd='git diff'
+alias gco='git checkout'
+alias gsb='git status -sb'
+
+# vim alias
+alias bi="vi"
+alias vo="vi"
+alias vu="vi"
+alias vbi="vi"
+alias vui="vi"
+alias vio="vi"
+alias iv="vi"
+alias scd='cd'
+alias sl="ls"
+alias ks="ls"
+alias og="go"
+alias gp="go"
+alias gi="go"
+
+# grep alias
+alias grep='grep -E --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+alias hg='history | grep'
+alias ag='alias | grep'
+
+# rc file alias
+alias brc="vi ~/.bashrc"
+alias vrc="vi ~/.vimrc"
+alias so="source ~/.bashrc"
+
+# docker command alias
+alias dps="docker ps"
+alias dst="docker stop"
+alias drm="docker rm"
+
+# script to command alias
+alias mk="/home/jim/work/scripts/makefile_generate.sh"
