@@ -4,10 +4,8 @@ sudo apt-get install vim-doc
 sudo apt-get install vim-runtime 
 sudo apt-get install vim-gnome 
 git clone https://ZhuoxiLi@github.com/YLiLarry/cs246-heartstone.git ~
-cp .bashrc ~
-cp .vimrc ~
+sudo cp .bashrc ~
+sudo cp .vimrc ~
 mkdir ~/.go-dirs
+cd ~/cs246-heartstone
 source ~/.bashrc
-cd ~/cs246-heartstone.git
-save a
-
