@@ -181,6 +181,7 @@ function vU {
 alias g++='g++ -std=c++14 -g -Wall'
 alias mc='make -s  clean'
 alias mr='make -s'
+alias md='mkdir'
 alias learn='man $(ls /bin | shuf | head -1)'
 alias s='ssh -Y j585zhan@linux.student.cs.uwaterloo.ca'
 alias gdb="gdbtui"
@@ -194,6 +195,7 @@ alias gb='git branch'
 alias gd='git diff'
 alias gco='git checkout'
 alias gsb='git status -sb'
+alias ..='cd ..'
 
 # vim alias
 alias bi="vi"
