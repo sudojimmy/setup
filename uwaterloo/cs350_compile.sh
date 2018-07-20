@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 :'
 Put `alias os=$(pwd)/cs350_compile.sh` to start script.
 
@@ -18,9 +20,6 @@ elif [ ${#} -eq 2 ] ; then
 	cd ../compile/ASST$1
 	bmake depend
 	bmake
-	if [ $? -ne 0 ] ; then
-		exit;
-	fi
 	bmake install
 	echo
 	echo "========== SUCCESS: configure and build ASST$1 =========="
@@ -29,9 +28,6 @@ else
 	cd $HOME/cs350-os161/os161-1.99/kern/compile/ASST$1
 	bmake depend
 	bmake
-	if [ $? -ne 0 ] ; then
-		exit;
-	fi
 	bmake install
 	cd $HOME/cs350-os161/root/
 	echo
