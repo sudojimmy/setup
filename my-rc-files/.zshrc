@@ -4,23 +4,36 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -41,17 +54,25 @@ ZSH_THEME="robbyrussell"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+	fzf
+	git
+	zsh-autosuggestions
+	zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -72,9 +93,6 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -86,87 +104,73 @@ source $ZSH/oh-my-zsh.sh
 
 # go script
 function go {
-    if [ "x$1" = "x" ]; then
-        echo "Directories:"
-        for i in ~/.go-dirs/*
-        do
-            printf "%20s %s\n" `basename $i` `cat $i`
-        done
-    else
-        cd `cat ~/.go-dirs/$1`
-    fi
-}
-function go {
-    if [ "x$1" = "x" ]; then
-        echo "Directories:"
-        for i in ~/.go-dirs/*
-        do
-            printf "%20s %s\n" `basename $i` `cat $i`
-        done
-    else
-        cd `cat ~/.go-dirs/$1`
-    fi
-}
-
-function pgo {
-    if ["x$1" = "x" ]; then
-        echo "Missing argument"
-    else
-        pushd `cat ~/.go-dirs/$1`
-    fi
+	if [ $# -gt 1 ]; then
+		/usr/local/bin/go "$@"
+	elif [ "x$1" = "x" ]; then
+		echo "Directories:"
+		for i in ~/.go-dirs/*
+		do
+			printf "%20s %s\n" `basename $i` `cat $i`
+		done
+	else
+		cd `cat ~/.go-dirs/$1`
+	fi
 }
 
 function save {
-    if [ "x$1" = "x" ]; then
-        echo "Missing argument"
-    else
-        pwd > ~/.go-dirs/$1
-    fi
+	if [ "x$1" = "x" ]; then
+		echo "Missing argument"
+	else
+		pwd > ~/.go-dirs/$1
+	fi
 }
 
 function unsave {
-    rm -v ~/.go-dirs/$1
+	rm -v ~/.go-dirs/$1
 }
 
-function vd {
-	vi */**/$1
+function swap {
+	mv $1 .$1.tmp
+	mv $2 $1
+	mv .$1.tmp $2
 }
 
-function vg {
-	vi `gss | awk '{print $2}' | grep -o "\S*$@.*\..*" `
+function tst {
+	if [ $# -eq 0 ]; then
+		echo "Usage: test [TEST_NAME] [FILES_TO_CARRY...]"
+	else
+		name=$1
+		_tst_path="$HOME/work/test/$name"
+		shift
+		echo $_tst_path
+		mkdir $_tst_path
+		cp "$@" $_tst_path
+		cd $_tst_path
+	fi
 }
 
-#function vf {
-#	$(!!) | awk '{print $1}' | grep $1 | cut -f '1' -d ':' | xargs vi
-#}
+function bkup {
+	if [ $# -ne 1 ]; then
+		echo "Usage: bkup [FILE_NAME]"
+	else
+		cp $1 .$1.bkup
+	fi
+}
 
-function vU {
-	vi `gss | grep 'U' | awk '{print $2}'`
+function piu {
+	cp "$@" ~/.piupia/
+}
+
+function pia {
+	mv ~/.piupia/* .
 }
 
 # normal alias
 alias g++='g++ -std=c++14 -g -Wall'
 alias mc='make -s  clean'
 alias mr='make -s'
-alias learn='man $(ls /bin | shuf | head -1)'
-alias s='ssh -Y j585zhan@linux.student.cs.uwaterloo.ca'
-alias gdb="gdbtui"
 alias gpo='git push origin'
-
-# vim alias
-alias bi="vi"
-alias vo="vi"
-alias vu="vi"
-alias vbi="vi"
-alias vui="vi"
-alias vio="vi"
-alias iv="vi"
-alias scd='cd'
 alias sl="ls"
-alias ks="ls"
-alias og="go"
-alias gp="go"
-alias gi="go"
 
 # grep alias
 alias grep='grep -E --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
@@ -175,6 +179,7 @@ alias ag='alias | grep'
 
 # rc file alias
 alias zrc="vi ~/.zshrc"
+alias zhs="vi ~/.zsh_history"
 alias vrc="vi ~/.vimrc"
 alias so="source ~/.zshrc"
 
@@ -183,14 +188,27 @@ alias dps="docker ps"
 alias dst="docker stop"
 alias drm="docker rm"
 
-# script to command alias
-alias sf="/home/jim/work/scripts/sfml_compile.sh"
-alias fin="/home/jim/work/scripts/devportal_ui_test_start.sh"
-alias mk="/home/jim/work/scripts/makefile_generate.sh"
+# tmux
+alias tls="tmux ls"
+alias tns="tmux new -s"
+alias tas="tmux a -t"
 
-export PATH=~/.local/bin:$PATH
+# terraform
+alias tinit="terraform init"
+alias tvali="terraform validate"
+alias tplan="terraform plan"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-PATH=/opt/eclipse/neon:$PATH
+alias dcd='dev cd'
+alias dcl='dev clone'
+alias dup='dev up'
+alias ddn='dev down'
+alias dud='dev update'
+
+
+#fzf
+
+# open files from gsb output
+function fsb() {
+	vim -o `gss | awk '{print $2}' | fzf`
+}
+alias fvi='vi $(fzf)'

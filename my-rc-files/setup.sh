@@ -1,11 +1,25 @@
 # use sudo to run script
-apt-get install git
-apt-get install vim-common
-apt-get install vim-doc
-apt-get install vim-runtime
-apt-get install vim-gnome
-cp .bashrc ~
+APPS="git vim-common vim-doc vim-runtime vim-gnome tmux fzf"
+
+OS="`uname`"
+
+case $OS in
+	'Linux')
+		OS='Linux'
+		apt-get install $APPS
+		cp .tmux.conf.linux ~
+		;;
+	'Darwin')
+		OS='Mac'
+		brew install $APPS
+		cp .tmux.conf.darwin ~
+		;;
+esac
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+cp .zshrc ~
 cp .vimrc ~
-cp .tmux.conf ~
 mkdir ~/.go-dirs
-source ~/.bashrc
+source ~/.zshrc
+save script
