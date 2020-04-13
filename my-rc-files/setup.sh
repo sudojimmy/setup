@@ -1,5 +1,5 @@
 # use sudo to run script
-APPS="git vim-common vim-doc vim-runtime vim-gnome tmux fzf"
+APPS="zsh git curl vim-common vim-doc vim-runtime vim-gnome tmux fzf"
 
 OS="`uname`"
 
@@ -17,9 +17,13 @@ case $OS in
 esac
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
 
 cp .zshrc ~
 cp .vimrc ~
+
 mkdir ~/.go-dirs
-source ~/.zshrc
-save script
+
+echo 'please run: source ~/.zshrc'
