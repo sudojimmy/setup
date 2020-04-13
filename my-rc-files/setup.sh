@@ -1,5 +1,6 @@
 # use sudo to run script
-APPS="zsh git curl vim-common vim-doc vim-runtime vim-gnome tmux fzf"
+SETUP_DIR=$PWD
+APPS="zsh git curl tmux fzf"
 
 OS="`uname`"
 
@@ -16,11 +17,17 @@ case $OS in
 		;;
 esac
 
+mkdir -p ~/work/setup
+
+cd ~/work/setup
+git clone https://github.com/vim/vim.git && cd vim/src && make && make install
+
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 
+cd $SETUP_DIR
 cp .zshrc ~
 cp .vimrc ~
 
