@@ -11,12 +11,12 @@ case $OS in
 	'Linux')
 		OS='Linux'
 		apt-get install $APPS
-		cp .tmux.conf.linux ~
+		cp .tmux.conf.linux ~/.tmux.conf
 		;;
 	'Darwin')
 		OS='Mac'
 		brew install $APPS
-		cp .tmux.conf.darwin ~
+		cp .tmux.conf.darwin ~/.tmux.conf
 		;;
 esac
 
