@@ -1,4 +1,7 @@
 # use sudo to run script
+
+set -xe
+
 SETUP_DIR=$PWD
 APPS="zsh git curl tmux fzf"
 
