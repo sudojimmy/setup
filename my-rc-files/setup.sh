@@ -3,7 +3,9 @@
 set -xe
 
 SETUP_DIR=$PWD
-APPS="zsh git curl tmux fzf"
+hOME=$(eval echo ~${SUDO_USER})
+
+APPS="zsh curl tmux fzf"
 
 OS="`uname`"
 
@@ -11,29 +13,28 @@ case $OS in
 	'Linux')
 		OS='Linux'
 		apt-get install $APPS
-		cp .tmux.conf.linux ~/.tmux.conf
+		apt remove --assume-yes vim-tiny && apt update && apt install --assume-yes vim
+		cp -a .tmux.conf.linux $HOME/.tmux.conf
 		;;
 	'Darwin')
 		OS='Mac'
 		brew install $APPS
-		cp .tmux.conf.darwin ~/.tmux.conf
+		cp -a .tmux.conf.darwin $HOME/.tmux.conf
 		;;
 esac
 
-mkdir -p ~/work/setup
-
-cd ~/work/setup
-git clone https://github.com/vim/vim.git && cd vim/src && make && make install
-
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/loket/oh-my-zsh/feature/batch-mode/tools/install.sh)" -s --batch || {
+	echo "Could not install Oh My Zsh" >/dev/stderr
+	exit 1
+}
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 
 cd $SETUP_DIR
-cp .zshrc ~
-cp .vimrc ~
+cp -a .zshrc $HOME
+cp -a .vimrc $HOME
 
-mkdir ~/.go-dirs
+mkdir $HOME/.go-dirs
 
 echo 'please run: source ~/.zshrc'
