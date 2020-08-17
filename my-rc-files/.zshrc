@@ -165,6 +165,10 @@ function pia {
 	mv ~/.piupia/* .
 }
 
+function issh {
+	cat ~/.ssh/id_rsa.pub | ssh $1 'cat >> ~/.ssh/authorized_keys'
+}
+
 # normal alias
 alias g++='g++ -std=c++14 -g -Wall'
 alias mc='make -s  clean'
