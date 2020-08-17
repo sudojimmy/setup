@@ -1,10 +1,10 @@
 set -s escape-time 0
 
 # switch panes using Alt-arrow without prefix
-bind -n M-a select-pane -L
-bind -n M-d select-pane -R
-bind -n M-w select-pane -U
-bind -n M-s select-pane -D
+bind -n M-j select-pane -L
+bind -n M-l select-pane -R
+bind -n M-i select-pane -U
+bind -n M-k select-pane -D
 
 # split panes
 bind -n M-"'" split-window -v -c '#{pane_current_path}'

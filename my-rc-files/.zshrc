@@ -103,9 +103,9 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # go script
-function go {
+function to {
 	if [ $# -gt 1 ]; then
-		/usr/local/bin/go "$@"
+		/usr/local/go/bin/go "$@"
 	elif [ "x$1" = "x" ]; then
 		echo "Directories:"
 		for i in ~/.go-dirs/*
@@ -168,7 +168,7 @@ function pia {
 # normal alias
 alias g++='g++ -std=c++14 -g -Wall'
 alias mc='make -s  clean'
-alias mr='make -s'
+alias mr='make -s run'
 alias gpo='git push origin'
 alias sl="ls"
 
@@ -212,3 +212,8 @@ function fsb() {
 	vim -o `gss | awk '{print $2}' | fzf`
 }
 alias fvi='vi $(fzf)'
+
+export GOPATH='/home/jim/go'
+export PATH=$PATH:/usr/local/go/bin
+
+eval $(thefuck --alias f) # sudo pip3 install thefuck
