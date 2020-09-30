@@ -3,7 +3,7 @@
 set -xe
 
 SETUP_DIR=$PWD
-hOME=$(eval echo ~${SUDO_USER})
+HOME=$(eval echo ~${SUDO_USER})
 
 APPS="zsh curl tmux fzf"
 
